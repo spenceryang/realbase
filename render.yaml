@@ -1,41 +1,25 @@
-# Render Blueprint — deploy agent as a background worker + web service
+# Render Blueprint — deploy agent as a web service
 services:
   - type: web
     name: realbase-agent
     runtime: node
     region: oregon
     plan: starter # $7/month
-    buildCommand: npm install -g pnpm && pnpm install && cd agent && pnpm run build
-    startCommand: cd agent && node dist/index.js
+    buildCommand: npm install -g pnpm && pnpm install
+    startCommand: cd agent && npx tsx src/index.ts
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: "4021"
-      - key: CDP_API_KEY_ID
-        sync: false
-      - key: CDP_API_KEY_SECRET
-        sync: false
       - key: AGENT_PRIVATE_KEY
         sync: false
       - key: BUILDER_CODE
-        value: realbase
-      - key: GREATSCHOOLS_API_KEY
-        sync: false
-      - key: WALKSCORE_API_KEY
-        sync: false
-      - key: CENSUS_API_KEY
-        sync: false
-      - key: SOCRATA_APP_TOKEN
-        sync: false
-      - key: RENTCAST_API_KEY
-        sync: false
-      - key: PINATA_JWT
-        sync: false
+        value: bc_4dvgxfwo
       - key: ORACLE_CONTRACT_ADDRESS
-        sync: false
+        value: "0x89BAa43839b3a0cD8DAbee08bcB30920a75F4716"
       - key: REPORT_CONTRACT_ADDRESS
-        sync: false
+        value: "0x67E4cbFD4045a3F419A806c89Da7A6AAB11aEA3F"
       - key: AGENT_TICK_INTERVAL_MS
         value: "900000"
     disk:
