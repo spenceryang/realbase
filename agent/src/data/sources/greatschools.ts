@@ -20,8 +20,8 @@ export async function fetchSchoolsNearby(
   radiusMiles = 1,
 ): Promise<SchoolInfo[]> {
   if (!config.GREATSCHOOLS_API_KEY) {
-    log.warn("No GreatSchools API key — returning empty data");
-    return [];
+    log.warn("No GreatSchools API key — using mock data");
+    return getMockSchools(lat, lng);
   }
 
   const url = `${GREATSCHOOLS_API}/schools?lat=${lat}&lon=${lng}&radius=${radiusMiles}&limit=10`;
@@ -66,6 +66,17 @@ function mapSchoolType(
   if (t.includes("charter")) return "charter";
   if (t.includes("private")) return "private";
   return "public";
+}
+
+function getMockSchools(lat: number, lng: number): SchoolInfo[] {
+  // Deterministic mock based on lat/lng to get varied but consistent results
+  const seed = Math.abs(Math.round((lat * 1000 + lng * 1000) % 100));
+  const baseRating = 4 + (seed % 6); // 4-9 range
+  return [
+    { name: "SF Elementary", rating: Math.min(baseRating, 10), gradeRange: "K-5", distance: 0.3, type: "public" },
+    { name: "Bay Area Middle School", rating: Math.min(baseRating - 1, 10), gradeRange: "6-8", distance: 0.5, type: "public" },
+    { name: "Pacific Charter Academy", rating: Math.min(baseRating + 1, 10), gradeRange: "K-8", distance: 0.7, type: "charter" },
+  ];
 }
 
 export async function fetchSchoolsForNeighborhoods(

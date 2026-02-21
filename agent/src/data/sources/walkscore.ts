@@ -18,8 +18,8 @@ export async function fetchWalkScore(
   address = "San Francisco, CA",
 ): Promise<WalkScoreData | null> {
   if (!config.WALKSCORE_API_KEY) {
-    log.warn("No Walk Score API key — returning null");
-    return null;
+    log.warn("No Walk Score API key — using mock data");
+    return getMockWalkScore(lat, lng);
   }
 
   const params = new URLSearchParams({
@@ -56,6 +56,20 @@ export async function fetchWalkScore(
     log.error({ error, lat, lng }, "Failed to fetch Walk Score");
     return null;
   }
+}
+
+function getMockWalkScore(lat: number, lng: number): WalkScoreData {
+  // SF neighborhoods generally have high walk/transit scores
+  // Vary by location: downtown areas higher, outer neighborhoods lower
+  const distFromDowntown = Math.sqrt(
+    Math.pow(lat - 37.7849, 2) + Math.pow(lng - (-122.4094), 2),
+  );
+  const proximity = Math.max(0, 1 - distFromDowntown * 30); // 0-1 scale
+  const walkScore = Math.round(60 + proximity * 35); // 60-95
+  const transitScore = Math.round(55 + proximity * 40); // 55-95
+  const bikeScore = Math.round(50 + proximity * 30); // 50-80
+  const desc = walkScore >= 90 ? "Walker's Paradise" : walkScore >= 70 ? "Very Walkable" : "Somewhat Walkable";
+  return { walkScore, transitScore, bikeScore, description: desc };
 }
 
 export async function fetchWalkScoresForNeighborhoods(

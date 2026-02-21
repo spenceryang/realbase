@@ -13,7 +13,7 @@ const configSchema = z.object({
   AGENT_PRIVATE_KEY: z.string().default(""),
 
   // Base Builder Code
-  BUILDER_CODE: z.string().default("realbase"),
+  BUILDER_CODE: z.string().default("bc_4dvgxfwo"),
 
   // Data Source API Keys
   GREATSCHOOLS_API_KEY: z.string().default(""),
