@@ -1,0 +1,23 @@
+{
+  "name": "realbase",
+  "private": true,
+  "scripts": {
+    "dev:agent": "turbo run dev --filter=@realbase/agent",
+    "dev:web": "turbo run dev --filter=@realbase/web",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "secp256k1",
+      "keccak"
+    ]
+  }
+}

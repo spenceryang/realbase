@@ -1,0 +1,19 @@
+{
+  "name": "@realbase/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:sepolia": "hardhat run deploy/001_deploy_oracle.ts --network base-sepolia",
+    "deploy:mainnet": "hardhat run deploy/001_deploy_oracle.ts --network base-mainnet",
+    "build": "hardhat compile",
+    "lint": "echo 'no lint configured'"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.1.0",
+    "hardhat": "^2.22.0",
+    "typescript": "^5.7.0"
+  }
+}
