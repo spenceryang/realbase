@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: "RealBase | SF Affordable Housing Agent on Base",
   description:
     "Self-sustaining autonomous agent providing San Francisco affordable housing data, powered by Base blockchain.",
+  other: {
+    "base:app_id": "699953a526c8104af5f08498",
+  },
 };
 
 const NAV_LINKS = [
@@ -22,9 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="base:app_id" content="699953a526c8104af5f08498" />
-      </head>
       <body className="min-h-screen font-mono">
         <nav className="border-b border-gray-800 px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
