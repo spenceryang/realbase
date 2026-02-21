@@ -71,6 +71,13 @@ export async function fetchDahliaListings(): Promise<AffordableListing[]> {
       }));
 
     log.info({ count: listings.length }, "Fetched DAHLIA listings");
+
+    // If no active listings found, use fallback data
+    if (listings.length === 0) {
+      log.warn("No active DAHLIA listings found — using fallback data");
+      return getFallbackListings();
+    }
+
     return listings;
   } catch (error) {
     log.error({ error }, "Failed to fetch DAHLIA listings — using fallback");

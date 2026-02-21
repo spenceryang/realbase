@@ -1,22 +1,38 @@
 import { Router } from "express";
+import { listings } from "../../db/schema.js";
 
 export const listingsRouter = Router();
 
-// Will be x402 paywalled: search listings
 listingsRouter.get("/listings/search", (req, res) => {
-  const { zipcode, maxRent, minBedrooms, affordableOnly, limit, offset } =
-    req.query;
+  const { zipcode, maxRent, minBedrooms, limit, offset } = req.query;
+  const db = (req as any).ctx.db;
 
-  // TODO: Query database once data pipeline is built
+  let results = db.select().from(listings).all();
+
+  if (zipcode) {
+    results = results.filter((l: any) => l.zipcode === zipcode);
+  }
+  if (maxRent) {
+    const max = Number(maxRent);
+    results = results.filter((l: any) => l.rentMonthly && l.rentMonthly <= max);
+  }
+  if (minBedrooms) {
+    const min = Number(minBedrooms);
+    results = results.filter((l: any) => l.bedrooms && l.bedrooms >= min);
+  }
+
+  const total = results.length;
+  const off = Number(offset) || 0;
+  const lim = Number(limit) || 50;
+  results = results.slice(off, off + lim);
+
   res.json({
-    listings: [],
-    total: 0,
+    listings: results,
+    total,
     filters: {
       zipcode: zipcode || null,
       maxRent: maxRent ? Number(maxRent) : null,
       minBedrooms: minBedrooms ? Number(minBedrooms) : null,
-      affordableOnly: affordableOnly === "true",
     },
-    notice: "Listings will be populated once DAHLIA scraper is running",
   });
 });
