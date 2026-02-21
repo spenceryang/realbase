@@ -1,7 +1,11 @@
 import { z } from "zod";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Load .env from project root (two levels up from agent/src/core/)
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
 const configSchema = z.object({
   // Coinbase Developer Platform (optional — agent can run with raw private key)
